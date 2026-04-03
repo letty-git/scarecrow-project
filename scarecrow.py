@@ -40,10 +40,10 @@ def main_window():
         else: lab_reg.config(text='Реестр: Чист', fg='red')
     ind_update()
 
-    all_start_btn = tkinter.Button(root, text='запуск всех функций', command=lambda: [start_all(), root.after(300, ind_update())])
+    all_start_btn = tkinter.Button(root, text='запуск всех функций', command=lambda: [start_all(), ind_update()])
     all_start_btn.grid(row=1, column=0, columnspan=3, sticky="nsew", padx=10, pady=5)
 
-    all_stop_btn = tkinter.Button(root, text="полное выключение и очистка", command=lambda: [stop_all(), root.after(300, ind_update())])
+    all_stop_btn = tkinter.Button(root, text="полное выключение и очистка", command=lambda: [stop_all(), ind_update()])
     all_stop_btn.grid(row=2, column=0, columnspan=3, sticky="nsew", padx=10, pady=5)
 
     sub_functions = [
@@ -59,7 +59,7 @@ def main_window():
             name, func = item
             row = (i // 3) + 3
             col = i % 3
-            btn = tkinter.Button(root, text=name, command=lambda f=func: [f(), root.after(300, ind_update())])
+            btn = tkinter.Button(root, text=name, command=lambda f=func: [f(), ind_update ])
             btn.grid(row=row, column=col, sticky="nsew", padx=5, pady=5)
 
     label = tkinter.Label(root, text='scarecrow.alpha')

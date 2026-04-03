@@ -2,7 +2,10 @@
 import winreg
 paths = ['SYSTEM\CurrentControlSet\Services\VBoxNetAdp',
 'SOFTWARE\Oracle\VirtualBox',
-'SYSTEM\CurrentControlSet\Services\VBoxDrv']
+'SYSTEM\CurrentControlSet\Services\VBoxDrv',
+'SOFTWARE\Kaspersky\protected',
+'SOFTWARE\ESET\ESETSecurity\CurrentVersion\Info',
+'SOFTWARE\Microsoft\Windows Defender\Real-Time Protection']
 created_regs=[]
 cpu_key = r'HARDWARE\DESCRIPTION\System\CentralProcessor\0'
 new_name = 'VBox CPU'
