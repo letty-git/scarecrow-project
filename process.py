@@ -21,3 +21,10 @@ def stop_process():
     for pr in active_pr:
         pr.terminate() 
     shutil.rmtree(path_)
+
+def is_started():
+    for p in active_pr:
+        if p.poll() is None:
+            return True
+    return False
+

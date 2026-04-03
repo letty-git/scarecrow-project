@@ -8,10 +8,16 @@ def create_files():
     for path in fake_paths:
         if not os.path.exists(path):
             open(path, 'x').close()
-    created_files.append(path)
+        created_files.append(path)
 
 def delеte_files():
     try:
         for fl in created_files:
             os.remove(fl)
     except:pass
+
+def is_created():
+    for path in fake_paths:
+        if os.path.exists(path):
+            return True
+    return False

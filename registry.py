@@ -6,17 +6,42 @@ paths = ['SYSTEM\CurrentControlSet\Services\VBoxNetAdp',
 created_regs=[]
 cpu_key = r'HARDWARE\DESCRIPTION\System\CentralProcessor\0'
 new_name = 'VBox CPU'
-old_name =[]
+old_name =''
 def mod_registry():
+    global old_name 
+    success = True
     for p in paths:
-        with winreg.CreateKeyEx(winreg.HKEY_LOCAL_MACHINE, p, 0, winreg.KEY_WRITE) as my_key:
-            created_regs.append(p)
-            winreg.SetValueEx(my_key,"Version", 0, winreg.REG_SZ, '6.1.0')
+        try:
+             winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, p)
+        except FileNotFoundError:
+            try:
+                with winreg.CreateKeyEx(winreg.HKEY_LOCAL_MACHINE, p, 0, winreg.KEY_WRITE) as my_key:
+                    created_regs.append(p)
+                    winreg.SetValueEx(my_key,"Version", 0, winreg.REG_SZ, '6.1.0')
+            except: success = False
+    try:
+        with winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, cpu_key, 0, winreg.KEY_WRITE | winreg.KEY_READ) as key:
+            oldname, reg_type = winreg.QueryValueEx(key, "ProcessorNameString")
+            old_name=oldname
+            winreg.SetValueEx(key, "ProcessorNameString", 0, winreg.REG_SZ, new_name)
+    except: success = False
+    return success
 
-    with winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, cpu_key, 0, winreg.KEY_WRITE) as key:
-        oldname, reg_type = winreg.QueryValueEx(key, "ProcessorNameString")
-        old_name.append(oldname)
-        winreg.SetValueEx(key, "ProcessorNameString", 0, winreg.REG_SZ, new_name)
+def is_modded():
+    try: 
+        with winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, cpu_key, 0, winreg.KEY_READ) as key:
+            s, _ = winreg.QueryValueEx(key, 'ProcessorNameString')
+            if s == new_name:
+                return True
+        for p in paths:
+            try:
+                winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, p, 0, winreg.KEY_READ)
+                return True
+            except FileNotFoundError:
+                continue
+    except:
+        return False
+    return False
 
 def res_registry():
     with winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, cpu_key, 0, winreg.KEY_WRITE) as key:
