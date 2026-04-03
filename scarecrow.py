@@ -35,9 +35,10 @@ def main_window():
         if process.is_started():
             lab_proc.config(text='Процессы: Запущены', fg='green')
         else: lab_proc.config(text='Процессы: Выключены', fg='red')
-        if registry.is_modded:
+        if registry.is_modded():
             lab_reg.config(text='Реестр: изменён', fg='green')
         else: lab_reg.config(text='Реестр: Чист', fg='red')
+        root.update_idletasks()
     ind_update()
 
     all_start_btn = tkinter.Button(root, text='запуск всех функций', command=lambda: [start_all(), ind_update()])
@@ -59,7 +60,7 @@ def main_window():
             name, func = item
             row = (i // 3) + 3
             col = i % 3
-            btn = tkinter.Button(root, text=name, command=lambda f=func: [f(), ind_update ])
+            btn = tkinter.Button(root, text=name, command=lambda f=func: [f(), ind_update()])
             btn.grid(row=row, column=col, sticky="nsew", padx=5, pady=5)
 
     label = tkinter.Label(root, text='scarecrow.alpha')
